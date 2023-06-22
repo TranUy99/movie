@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:movie/src/core/model/genre_response.dart';
+import 'package:movie/src/core/model/movie.dart';
 import 'package:movie/src/core/model/movie_response.dart';
 import 'package:movie/src/core/model/person_response.dart';
 
 class MovieRepository {
-  final String apiKey = "8a1227b5735a7322c4a43a461953d4ff";
+  final String apiKey = "e9e9d8da18ae29fc430845952232787c";
   static String mainUrl = "https://api.themoviedb.org/3";
+
   final Dio _dio = Dio();
   var getPopularUrl = '$mainUrl/movie/top_rated';
   var getMoviesUrl = '$mainUrl/discover/movie';
@@ -25,14 +29,30 @@ class MovieRepository {
     }
   }
 
-  Future<MovieResponse> getPlayingMovies() async {
+  Future<List<Movie>> getPlayingMovies() async {
     var params = {"api_key": apiKey, "language": "en-US", "page": 1};
     try {
       Response response = await _dio.get(getPlayingUrl, queryParameters: params);
-      return MovieResponse.fromJson(response.data);
+
+      List<Movie> results = (response.data['results'] as List).map((item) => Movie.fromJson(item)).toList();
+      return results;
     } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return MovieResponse();
+      print("Exception occurred: $error stackTrace: $stacktrace");
+
+      return [];
+    }
+  }
+
+  Future<List<Movie>> getMovieByGenre(int id) async {
+    var similarMoviesUrl = '$mainUrl/movie/$id/similar';
+    var params = {"api_key": apiKey, "language": "en-US", "page": 1};
+    try {
+      Response response = await _dio.get(similarMoviesUrl, queryParameters: params);
+      List<Movie> results = (response.data['results'] as List).map((item) => Movie.fromJson(item)).toList();
+      return results;
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error\nStackTrace: $stacktrace");
+      return [];
     }
   }
 
@@ -55,17 +75,6 @@ class MovieRepository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return PersonResponse();
-    }
-  }
-
-  Future<MovieResponse> getMovieByGenre(int id) async {
-    var params = {"api_key": apiKey, "language": "en-US", "page": 1, "with_genres": id};
-    try {
-      Response response = await _dio.get(getMoviesUrl, queryParameters: params);
-      return MovieResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return MovieResponse();
     }
   }
 

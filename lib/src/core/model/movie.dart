@@ -9,22 +9,22 @@ class Movie {
   final num? popularity;
   @JsonKey(name: 'title')
   final String? title;
-  @JsonKey(name: 'backPoster')
-  final String? backPoster;
-  @JsonKey(name: 'poster')
-  final String? poster;
+  @JsonKey(name: 'backdrop_path')
+  final String? backdrop_path;
+  @JsonKey(name: 'poster_path')
+  final String? poster_path;
   @JsonKey(name: 'overview')
   final String? overview;
-  @JsonKey(name: 'rating')
-  final num? rating;
+  @JsonKey(name: 'vote_average')
+  final num? vote_average;
 
   Movie({
     this.id,
-    this.backPoster,
+    this.backdrop_path,
     this.overview,
     this.popularity,
-    this.poster,
-    this.rating,
+    this.poster_path,
+    this.vote_average,
     this.title,
   });
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);

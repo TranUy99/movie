@@ -43,7 +43,9 @@ class _NowPlayingState extends State<NowPlaying> {
                 itemCount: movies.take(5).length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      
+                    },
                     child: Stack(
                       children: <Widget>[
                         Hero(

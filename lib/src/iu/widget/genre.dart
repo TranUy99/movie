@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/src/core/model/genre.dart';
 import 'package:movie/src/core/model/genre_response.dart';
 import 'package:movie/src/iu/bloc/genre_bloc.dart';
-import 'package:movie/src/iu/screen/genre_list.dart';
+import 'package:movie/src/iu/widget/genre_list.dart';
 
 class GenresScreen extends StatefulWidget {
   const GenresScreen({super.key});

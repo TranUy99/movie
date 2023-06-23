@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie/src/contants/color.dart';
 import '../../core/model/movie_response.dart';
 import '../bloc/movie_by_genre_bloc.dart';
+import '../screen/detail_screen.dart';
 
 class GenreMovies extends StatefulWidget {
   final int genreId;
@@ -48,15 +49,15 @@ class _GenreMoviesState extends State<GenreMovies> {
                       right: 15.0,
                     ),
                     child: GestureDetector(
-                      // onTap: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           MovieDetailScreen(movie: movie),
-                      //     ),
-                      //   );
-                      // },
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MovieDetailScreen(movie: movie),
+                          ),
+                        );
+                      },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

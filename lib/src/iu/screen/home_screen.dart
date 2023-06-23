@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie/src/contants/color.dart';
-import 'package:movie/src/iu/screen/best_movie.dart';
-import 'package:movie/src/iu/screen/genre.dart';
-import 'package:movie/src/iu/screen/now_playing.dart';
+import 'package:movie/src/iu/widget/best_movie.dart';
+import 'package:movie/src/iu/widget/genre.dart';
+import 'package:movie/src/iu/widget/now_playing.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,9 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         children: const <Widget>[
-           NowPlaying(),
+          NowPlaying(),
           GenresScreen(),
-          
           BestMovies(),
         ],
       ),

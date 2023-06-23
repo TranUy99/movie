@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie/src/contants/color.dart';
 import 'package:movie/src/core/model/genre.dart';
 import 'package:movie/src/iu/bloc/movie_by_genre_bloc.dart';
-import 'package:movie/src/iu/screen/movie_by_genre.dart';
+import 'package:movie/src/iu/widget/movie_by_genre.dart';
 
 class GenresList extends StatefulWidget {
   final List<Genre> genres;

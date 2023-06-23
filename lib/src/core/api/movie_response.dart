@@ -26,9 +26,9 @@ class MovieRepository {
     var params = {"api_key": apiKey, "language": "en-US", "page": 1};
     try {
       Response response = await _dio.get(getPopularUrl, queryParameters: params);
-    
+
       List<Movie> results = (response.data['results'] as List).map((item) => Movie.fromJson(item)).toList();
-     
+
       return results;
     } catch (error, stacktrace) {
       print("Exception occurred: $error stackTrace: $stacktrace");
@@ -39,6 +39,7 @@ class MovieRepository {
 
   Future<List<Movie>> getPlayingMovies() async {
     var params = {"api_key": apiKey, "language": "en-US", "page": 1};
+
     try {
       Response response = await _dio.get(getPlayingUrl, queryParameters: params);
 
@@ -100,7 +101,6 @@ class MovieRepository {
 
   Future<VideoResponse> getMovieVideos(int id) async {
     var params = {"api_key": apiKey, "language": "en-US"};
-    log("$id");
     try {
       Response response = await _dio.get(movieUrl + "/$id" + "/videos", queryParameters: params);
       return VideoResponse.fromJson(response.data);

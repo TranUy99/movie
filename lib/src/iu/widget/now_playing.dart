@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movie/src/contants/color.dart';
 import 'package:movie/src/iu/bloc/playing_bloc.dart';
 import 'package:page_indicator/page_indicator.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../core/model/movie_response.dart';
+import '../../core/model/video_response.dart';
+import '../bloc/movie_video_bloc.dart';
+import '../screen/video_player.dart';
 
 class NowPlaying extends StatefulWidget {
   const NowPlaying({super.key});
@@ -42,9 +48,39 @@ class _NowPlayingState extends State<NowPlaying> {
                 scrollDirection: Axis.horizontal,
                 itemCount: movies.take(5).length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
-                      
+                      movieVideosBloc.getMovieVideo(movies[index].id!);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return StreamBuilder<VideoResponse>(
+                              stream: movieVideosBloc.subject.stream,
+                              builder: (context, AsyncSnapshot<VideoResponse> snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.error != null && snapshot.data!.error.isNotEmpty) {
+                                    return const Text("Error occurred");
+                                  }
+                                  return VideoPlayerScreen(
+                                    controller: YoutubePlayerController(
+                                      initialVideoId: snapshot.data!.videos[index].key,
+                                      flags: const YoutubePlayerFlags(
+                                        autoPlay: true,
+                                        mute: true,
+                                      ),
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return const Text("Error occurred");
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      );
                     },
                     child: Stack(
                       children: <Widget>[
@@ -89,7 +125,7 @@ class _NowPlayingState extends State<NowPlaying> {
                                 children: <Widget>[
                                   Text(
                                     movies[index].title!,
-                                    style: TextStyle(height: 1.5, color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
+                                    style: const TextStyle(height: 1.5, color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),
                                   ),
                                 ],
                               ),
@@ -101,10 +137,9 @@ class _NowPlayingState extends State<NowPlaying> {
               ),
             ),
           );
-          
         } else if (snapshot.hasError) {
           // Handle the error case
-          return Text('Error occurred');
+          return const Text('Error occurred');
         } else {
           // Handle the initial loading state or when data is still null
           return CircularProgressIndicator();
@@ -112,5 +147,4 @@ class _NowPlayingState extends State<NowPlaying> {
       },
     );
   }
-
 }
